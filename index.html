@@ -22,28 +22,35 @@
   </head>
   <body>
     <canvas id="signatureCanvas" class="signature-canvas"></canvas>
-    <button id="saveButton" class="save-button">Save</button>
+    <button id="saveButton" class="save-button">Salvar</button>
+    <button id="clearButton" class="save-button">Limpar</button>
+
+    <img src="" id="savedSignature" />
 
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script>
       const canvas = document.querySelector('#signatureCanvas')
       const signaturePad = new SignaturePad(canvas)
-      const saveButton = document.querySelector('#saveButton')
-      const { jsPDF } = window.jspdf
 
+      var clearButton = document.getElementById('clearButton')
+      var saveButton = document.getElementById('saveButton')
+      var savedSignature = document.getElementById('savedSignature')
+
+      clearButton.addEventListener('click', function () {
+        signaturePad.clear()
+      })
       saveButton.addEventListener('click', function () {
-        const signatureImage = signaturePad.toDataURL()
+        if (!signaturePad.isEmpty()) {
+          // Salve a assinatura como imagem base64
+          var signatureData = signaturePad.toDataURL()
 
-        if (signaturePad.isEmpty()) {
-          alert('Please provide a signature.')
-          return
+          // Exiba a imagem da assinatura salva
+          savedSignature.src = signatureData
+          savedSignature.style.display = 'block'
+        } else {
+          alert('Por favor, assine antes de salvar.')
         }
-        const doc = new jsPDF()
-        doc.addImage(signatureImage, 'PNG', 10, 10, 100, 50)
-        doc.save('signed_document.pdf')
       })
     </script>
   </body>
