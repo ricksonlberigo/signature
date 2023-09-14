@@ -3,83 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Static Template</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        background-color: #f0f0f0;
-        padding: 20px;
-      }
-
-      .signature-container {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        padding: 20px;
-        margin: 0 auto;
-        max-width: 500px;
-      }
-
       .signature-canvas {
-        border: 1px solid #000;
-        border-radius: 5px;
+        border: 2px solid #000;
         margin-bottom: 10px;
-        cursor: crosshair;
-        width: 500px;
-        height: 200px;
       }
-
-      @media (max-width: 500px) {
-        .signature-canvas {
-          width: 300px;
-          height: 200px;
-        }
-      }
-
-      .action-button {
-        background-color: #007bff;
-        color: #fff;
+      .save-button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px;
         border: none;
-        border-radius: 5px;
-        padding: 10px 20px;
-        margin: 5px;
+        border-radius: 4px;
         cursor: pointer;
-      }
-
-      .saved-signature {
-        display: none;
-        margin-top: 20px;
-        max-width: 100%;
-      }
-
-      p {
-        font-size: 16px;
-        font-family: Arial;
       }
     </style>
   </head>
   <body>
-    <p>
-      Lib:
-      <a href="https://github.com/szimek/signature_pad"
-        >https://github.com/szimek/signature_pad</a
-      >
-    </p>
+    <canvas id="signatureCanvas" class="signature-canvas"></canvas>
+    <button id="saveButton" class="save-button">Save</button>
 
-    <div class="signature-container">
-      <canvas id="signatureCanvas" class="signature-canvas"></canvas>
-      <button id="clearButton" class="action-button">Limpar</button>
-      <button id="saveButton" class="action-button">Salvar</button>
-    </div>
-    <img
-      id="savedSignature"
-      class="saved-signature"
-      src=""
-      alt="Assinatura Salva"
-    />
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
-    <script src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+      const canvas = document.querySelector('#signatureCanvas')
+      const signaturePad = new SignaturePad(canvas)
+      const saveButton = document.querySelector('#saveButton')
+      const { jsPDF } = window.jspdf
+
+      saveButton.addEventListener('click', function () {
+        const signatureImage = signaturePad.toDataURL()
+
+        if (signaturePad.isEmpty()) {
+          alert('Please provide a signature.')
+          return
+        }
+        const doc = new jsPDF()
+        doc.addImage(signatureImage, 'PNG', 10, 10, 100, 50)
+        doc.save('signed_document.pdf')
+      })
+    </script>
   </body>
 </html>

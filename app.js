@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var canvas = document.getElementById('signatureCanvas')
-  var signaturePad = new SignaturePad(canvas)
+  const canvas = document.querySelector('#signatureCanvas')
+  const signaturePad = new SignaturePad(canvas)
 
   var clearButton = document.getElementById('clearButton')
   var saveButton = document.getElementById('saveButton')
