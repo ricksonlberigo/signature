@@ -26,6 +26,15 @@
         border-radius: 5px;
         margin-bottom: 10px;
         cursor: crosshair;
+        width: 500px;
+        height: 200px;
+      }
+
+      @media (max-width: 500px) {
+        .signature-canvas {
+          width: 300px;
+          height: 200px;
+        }
       }
 
       .action-button {
@@ -59,12 +68,7 @@
     </p>
 
     <div class="signature-container">
-      <canvas
-        id="signatureCanvas"
-        class="signature-canvas"
-        width="400"
-        height="200"
-      ></canvas>
+      <canvas id="signatureCanvas" class="signature-canvas"></canvas>
       <button id="clearButton" class="action-button">Limpar</button>
       <button id="saveButton" class="action-button">Salvar</button>
     </div>
